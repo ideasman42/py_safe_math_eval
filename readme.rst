@@ -51,6 +51,26 @@ Where these will fail:
    value = safe_eval("open('test', 'r')")
 
 
+To check other examples of what does and doesn't work, check ``test.py``.
+
+If you find any workarounds to this module, please report a bug.
+
+
+Caveats
+=======
+
+Running out of memory will raise a ``MemoryError`` and isn't prevented:
+
+.. code-block:: Python
+
+   '0' * (2 ** 60)
+
+Entering an infinite loop isn't prevented:
+
+.. code-block:: Python
+
+   sum(iter(lambda: 0, 1))
+
 Explicitly passing in functions which can be used maliciously isn't prevented:
 
 .. code-block:: Python
@@ -58,8 +78,4 @@ Explicitly passing in functions which can be used maliciously isn't prevented:
    import os
    value = safe_eval("remove('file')", locals=dict(remove=os.remove))
 
-
-To check other examples of what does and doesn't work, check ``test.py``.
-
-If you find any workarounds to this module, please report a bug.
 
