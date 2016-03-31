@@ -67,9 +67,11 @@ Running out of memory will raise a ``MemoryError`` and isn't prevented:
 
 Entering an infinite loop isn't prevented:
 
+(note that ``iter`` isn't available, so would need to be passed in).
+
 .. code-block:: Python
 
-   sum(iter(lambda: 0, 1))
+   sum(iter(int, 1))
 
 Explicitly passing in functions which can be used maliciously isn't prevented:
 
