@@ -129,11 +129,18 @@ def raise_if_code_unsafe(code, globals=None, locals=None):
     if locals:
         whitelist.update(locals)
 
+    bad_ops = []
     for name in code.co_names:
         if name not in whitelist:
-            raise RuntimeError(
-                    "Name %r not in white-list: (%s)" %
-                    (name, ", ".join(sorted(whitelist))))
+            bad_ops.append(name)
+
+    if bad_ops:
+        raise RuntimeError(
+                "Name(s) %s not in white-list: (%s)" % (
+                ", ".join(repr(name) for name in bad_ops),
+                ", ".join(sorted(whitelist)))
+                )
+    del bad_ops
 
     code_bytes = code.co_code
 
