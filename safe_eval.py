@@ -33,7 +33,7 @@ __all__ = (
     "raise_if_code_unsafe",
     )
 
-from dis import opname
+import dis
 
 
 builtins_whitelist = {
@@ -118,7 +118,7 @@ opcode_whitelist = {
     }
 
 # Convert names to index
-opname_reverse = {name: index for index, name in enumerate(opname)}
+opname_reverse = {name: index for index, name in enumerate(dis.opname)}
 opcode_whitelist_index = {opname_reverse[name] for name in opcode_whitelist}
 
 
@@ -145,8 +145,7 @@ def raise_if_code_unsafe(code, globals=None, locals=None):
     code_bytes = code.co_code
 
     def code_size(opcode):
-        # HAVE_ARGUMENT = 90
-        if opcode >= 90:
+        if opcode >= dis.HAVE_ARGUMENT:
             return 3
         else:
             return 1
@@ -157,7 +156,7 @@ def raise_if_code_unsafe(code, globals=None, locals=None):
         opcode = code_bytes[i]
 
         if opcode not in opcode_whitelist_index:
-            raise RuntimeError("OpCode %r not in white-list" % opname[opcode])
+            raise RuntimeError("OpCode %r not in white-list" % dis.opname[opcode])
 
         i += code_size(opcode)
 
