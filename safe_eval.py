@@ -123,13 +123,11 @@ opcode_whitelist_index = {opname_reverse[name] for name in opcode_whitelist}
 
 
 def raise_if_code_unsafe(code, globals=None, locals=None):
-    namespace_whitelist = set()
+    whitelist = set(builtins_whitelist)
     if globals:
-        namespace_whitelist.update(set(globals.keys()))
+        whitelist.update(globals)
     if locals:
-        namespace_whitelist.update(set(locals.keys()))
-
-    whitelist = builtins_whitelist | namespace_whitelist
+        whitelist.update(locals)
 
     for name in code.co_names:
         if name not in whitelist:
