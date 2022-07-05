@@ -25,6 +25,15 @@ class TestSafeEval_Secure(unittest.TestCase):
     def test_math_module_01(self):
         self.assertEqual(safe_eval("sqrt(9)", globals=math_namespace), 3)
 
+    def test_list_01(self):
+        self.assertEqual(safe_eval("len([1, 2, 3])"), 3)
+
+    def test_str_01(self):
+        self.assertEqual(safe_eval("len('hello world!' * 3)"), 36)
+
+    def test_str_slice_01(self):
+        self.assertEqual(safe_eval("len(('t' * 3)[0:3])"), 3)
+
 
 class TestSafeEval_Insecure(unittest.TestCase):
     """
@@ -53,4 +62,3 @@ class TestSafeEval_Insecure(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
